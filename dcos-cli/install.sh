@@ -9,7 +9,7 @@ echo ""
 
 mkdir -p $BUILD_DIR
 rm -rf $BUILD_DIR/*
-cd $BUILD_DIR
+pushd $BUILD_DIR
 
 echo "Retrieving latest source code..."
 echo ""
@@ -35,6 +35,7 @@ echo ""
 
 pip install dist/*.whl
 
+popd
 popd
 
 echo "Done!"
