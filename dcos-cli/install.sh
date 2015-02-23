@@ -2,40 +2,28 @@
 
 set -o errexit -o pipefail
 
-BUILD_DIR='/tmp/dcos-cli/build'
+usage()
+{ # Show usage information.
+  echo "install.sh <shared_secret>";
+}
 
-echo "Setting up build directory..."
-echo ""
+if [ "$#" -eq 2 ]; then
+  usage;
+  exit 1;
+fi
 
-mkdir -p $BUILD_DIR
-rm -rf $BUILD_DIR/*
-pushd $BUILD_DIR
+args=( "$@" );
 
-echo "Retrieving latest source code..."
-echo ""
+SECRET=${args[0]};
 
-git clone git@github.com:mesosphere/dcos-cli
-pushd dcos-cli
+echo "Fetching latest DCOS CLI wheel...";
+echo "";
 
-echo "Setting up virtualenv..."
-echo ""
+curl -O https://downloads.mesosphere.io/dcos-cli/${SECRET}.whl /tmp/${SECRET}.whl
 
-make env
-source env/bin/activate
-pip install --upgrade pip
+echo "Installing DCOS CLI from wheel...";
+echo "";
 
-echo "Building packages..."
-echo ""
+pip install /tmp/${SECRET}.whl
 
-make packages
-deactivate
-
-echo "Installing DCOS CLI from wheel..."
-echo ""
-
-pip install dist/*.whl
-
-popd
-popd
-
-echo "Done!"
+echo "Done!";
