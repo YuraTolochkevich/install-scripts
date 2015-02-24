@@ -19,6 +19,15 @@ SECRET=${args[0]};
 echo "Installing DCOS CLI from wheel...";
 echo "";
 
-pip install https://downloads.mesosphere.io/dcos-cli/${SECRET}.whl
+BUILD_DIR="/tmp/dcos-cli/build"
+mkdir -p $BUILD_DIR
+pushd $BUILD_DIR
+
+WHEEL_FILE="dcos-0.1.0-py2.py3-none-any.whl"
+curl -O https://downloads.mesosphere.io/dcos-cli/${SECRET}/${WHEEL_FILE}
+pip install ${WHEEL_FILE}
+rm ${WHEEL_FILE}
+
+popd
 
 echo "Done!";
