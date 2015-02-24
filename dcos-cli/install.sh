@@ -22,7 +22,6 @@ echo "";
 BUILD_DIR="/tmp/dcos-cli/build"
 rm -rf $BUILD_DIR
 mkdir -p $BUILD_DIR
-tree $BUILD_DIR
 pushd $BUILD_DIR
 
 WHEEL_FILE="dcos-0.1.0-py2.py3-none-any.whl"
