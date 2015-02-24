@@ -16,14 +16,9 @@ args=( "$@" );
 
 SECRET=${args[0]};
 
-echo "Fetching latest DCOS CLI wheel...";
-echo "";
-
-curl -O https://downloads.mesosphere.io/dcos-cli/${SECRET}.whl /tmp/${SECRET}.whl
-
 echo "Installing DCOS CLI from wheel...";
 echo "";
 
-pip install /tmp/${SECRET}.whl
+pip install https://downloads.mesosphere.io/dcos-cli/${SECRET}.whl
 
 echo "Done!";
