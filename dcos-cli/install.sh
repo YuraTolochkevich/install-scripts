@@ -36,8 +36,8 @@ deactivate
 
 ENV_SETUP="$VIRTUAL_ENV_PATH/bin/env-setup"
 source $ENV_SETUP
-dcos config marathon.host $MARATHON_HOST
-dcos config marathon.port $MARATHON_PORT
+dcos config set marathon.host $MARATHON_HOST
+dcos config set marathon.port $MARATHON_PORT
 
 echo "Done installing and configuring DCOS CLI"
 echo "Please add $VIRTUAL_ENV_PATH/bin to your PATH"
