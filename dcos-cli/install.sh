@@ -15,7 +15,7 @@ fi
 ARGS=( "$@" );
 
 SECRET=${ARGS[0]}
-VIRTUAL_ENV_PATH=$(python -c "import os; print(os.path.realpath('$(dirname "${ARGS[1]}")'))")
+VIRTUAL_ENV_PATH=$(python -c "import os; print(os.path.realpath('"${ARGS[1]}"'))")
 MARATHON_HOST=${ARGS[2]}
 MARATHON_PORT=${ARGS[3]}
 
@@ -25,14 +25,20 @@ echo "";
 # Let's first setup a virtualenv: we are assuming that the path is absolute
 mkdir -p $VIRTUAL_ENV_PATH
 virtualenv $VIRTUAL_ENV_PATH
-source "$VIRTUAL_ENV_PATH/bin/activate"
 
 # Install the dcos-cli
-WHEEL_FILE="dcos-0.1.0-py2.py3-none-any.whl"
-pip install <(curl --silent --fail "https://downloads.mesosphere.io/dcos-cli/${SECRET}/${WHEEL_FILE}")
+DCOS_WHEEL_FILE="dcos-0.1.0-py2.py3-none-any.whl"
+DCOSCLI_WHEEL_FILE="dcoscli-0.1.0-py2.py3-none-any.whl"
 
-# Deactivate the virtualenv
-deactivate
+# Install the DCOS package
+curl --silent --fail -O "https://downloads.mesosphere.io/dcos-cli/${SECRET}/${DCOS_WHEEL_FILE}"
+"$VIRTUAL_ENV_PATH/bin/pip" install --quiet ${DCOS_WHEEL_FILE}
+rm ${DCOS_WHEEL_FILE}
+
+# Install the DCOS CLI package
+curl --silent --fail -O "https://downloads.mesosphere.io/dcos-cli/${SECRET}/${DCOSCLI_WHEEL_FILE}"
+"$VIRTUAL_ENV_PATH/bin/pip" install --quiet ${DCOSCLI_WHEEL_FILE}
+rm ${DCOSCLI_WHEEL_FILE}
 
 ENV_SETUP="$VIRTUAL_ENV_PATH/bin/env-setup"
 source $ENV_SETUP
