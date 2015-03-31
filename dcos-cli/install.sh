@@ -44,6 +44,8 @@ ENV_SETUP="$VIRTUAL_ENV_PATH/bin/env-setup"
 source $ENV_SETUP
 dcos config set marathon.host $MARATHON_HOST
 dcos config set marathon.port $MARATHON_PORT
+dcos config append package.sources git://github.com/mesosphere/universe.git
+dcos config set package.cache /tmp/cache
 
 echo "Done installing and configuring DCOS CLI"
 echo "Please add $VIRTUAL_ENV_PATH/bin to your PATH"
