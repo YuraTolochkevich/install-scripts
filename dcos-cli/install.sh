@@ -4,10 +4,10 @@ set -o errexit -o pipefail
 
 usage()
 { # Show usage information.
-  echo "install.sh <shared_secret> <installation_path> <marathon_host> <marathon_port>"
+  echo "install.sh <shared_secret> <installation_path> <marathon_host> [<marathon_port>]"
 }
 
-if [ "$#" -ne 4 ]; then
+if [ "$#" -lt 3 ]; then
   usage;
   exit 1;
 fi
@@ -17,7 +17,7 @@ ARGS=( "$@" );
 SECRET=${ARGS[0]}
 VIRTUAL_ENV_PATH=$(python -c "import os; print(os.path.realpath('"${ARGS[1]}"'))")
 MARATHON_HOST=${ARGS[2]}
-MARATHON_PORT=${ARGS[3]}
+MARATHON_PORT=${ARGS[3]:-8080}
 
 echo "Installing DCOS CLI from wheel...";
 echo "";
@@ -49,6 +49,6 @@ dcos config set package.cache /tmp/dcos/package-cache
 
 echo "Finished installing and configuring DCOS CLI."
 echo "Please add $VIRTUAL_ENV_PATH/bin to your PATH."
-echo "On Linux systems, add the following to ~/.profile to automatically set up your PATH: "
-echo "source $ENV_SETUP"
-echo "Once your PATH is set up, type `dcos` to get started."
+echo "On Linux systems, run the line below to automatically set up your PATH: "
+echo "echo \"source $ENV_SETUP\" >> ~/.profile"
+echo "Once your PATH is set up, type dcos help to get started."
