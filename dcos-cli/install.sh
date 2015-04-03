@@ -47,6 +47,8 @@ dcos config set marathon.port $MARATHON_PORT
 dcos config append package.sources https://github.com/mesosphere/universe/archive/ea.zip
 dcos config set package.cache /tmp/dcos/package-cache
 
-echo "Done installing and configuring DCOS CLI"
-echo "Please add $VIRTUAL_ENV_PATH/bin to your PATH"
-echo "For Linux add: '. $ENV_SETUP' to your .profile"
+echo "Finished installing and configuring DCOS CLI."
+echo "Please add $VIRTUAL_ENV_PATH/bin to your PATH."
+echo "On Linux systems, add the following to ~/.profile to automatically set up your PATH: "
+echo "source $ENV_SETUP"
+echo "Once your PATH is set up, type `dcos` to get started."
