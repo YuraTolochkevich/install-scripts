@@ -18,6 +18,7 @@ SECRET=${ARGS[0]}
 VIRTUAL_ENV_PATH=$(python -c "import os; print(os.path.realpath('"${ARGS[1]}"'))")
 MARATHON_HOST=${ARGS[2]}
 MARATHON_PORT=${ARGS[3]:-8080}
+UNIVERSE_URI="https://github.com/mesosphere/universe/archive/ea.zip"
 
 echo "Installing DCOS CLI from wheel...";
 echo "";
@@ -44,7 +45,9 @@ ENV_SETUP="$VIRTUAL_ENV_PATH/bin/env-setup"
 source $ENV_SETUP
 dcos config set marathon.host $MARATHON_HOST
 dcos config set marathon.port $MARATHON_PORT
-dcos config append package.sources https://github.com/mesosphere/universe/archive/ea.zip
+if ! `dcos config show package.sources 2>&1 | grep -q "$UNIVERSE_URI"`; then
+    dcos config append package.sources $UNIVERSE_URI
+fi
 dcos config set package.cache /tmp/dcos/package-cache
 
 echo "Finished installing and configuring DCOS CLI."
