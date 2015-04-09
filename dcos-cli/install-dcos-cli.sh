@@ -20,6 +20,17 @@ MARATHON_HOST=${ARGS[2]}
 MARATHON_PORT=${ARGS[3]:-8080}
 UNIVERSE_URI="https://github.com/mesosphere/universe/archive/ea.zip"
 
+command -v virtualenv >/dev/null 2>&1 || { echo >&2"Cannot find virtualenv. Aborting."; exit 1; }
+
+VIRTUALENV_VERSION=$(virtualenv --version)
+VERSION_REGEX="s#[^0-9]*\([0-9]*\)[.]\([0-9]*\)[.]\([0-9]*\)\([0-9A-Za-z-]*\)#\1#"
+
+eval MAJOR=`echo $VIRTUALENV_VERSION | sed -e $VERSION_REGEX`
+if [ $MAJOR -lt 12 ];
+	then echo "Virtualenv version must be 12 or greater. Aborting.";
+	exit 1;
+fi
+
 echo "Installing DCOS CLI from wheel...";
 echo "";
 
