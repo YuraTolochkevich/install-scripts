@@ -25,6 +25,10 @@ echo "Virtualenv version must be 12 or greater. Aborting."
 echo "Installing DCOS CLI from wheel..."
 echo ""
 
+if (-Not([System.IO.Path]::IsPathRooted("$installation_path"))) {
+$installation_path = Join-Path (pwd) $installation_path
+}
+
 if (-Not( Test-Path $installation_path)) {
 mkdir  $installation_path
 }
@@ -49,9 +53,9 @@ $client.DownloadFile("https://downloads.mesosphere.io/dcos-cli/${DCOSCLI_WHEEL_F
 rm ${DCOSCLI_WHEEL_FILE_FULL_PATH}
 
 
-$env:Path="$installation_path\Scripts\"
-[Environment]::SetEnvironmentVariable("Path", "$env:Path;$installation_path\Scripts\;", "User")
 
+[Environment]::SetEnvironmentVariable("Path", "$installation_path\Scripts\;", "User")
+$env:Path="$env:Path;$installation_path\Scripts\"
 
 $DCOS_CONFIG="$env:USERPROFILE\.dcos\dcos.toml"
 
